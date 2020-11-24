@@ -3,4 +3,7 @@
 }
 .app__header{
   display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  justify-content: space-between;
 }
