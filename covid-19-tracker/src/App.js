@@ -5,13 +5,17 @@ import InfoBox from './InfoBox.js';
 import Map from './Map.js'
 import Table from './Table.js';
 import { sortData } from "./util";
-import LineGraph from './LineGraph.js'
+import LineGraph from './LineGraph.js';
+import "leaflet/dist/leaflet.css";
+import "leaflet/dist/leaflet.css";
 
 function App() {
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState('worldwide');
   const [countryInfo, setCountryInfo] = useState({});
   const [tableData, setTableData] =useState([]);
+  const [mapCenter, setMapCenter] = useState({ lat: 34.80746, lng: -40.4796});
+  const [mapZoom, setMapZoom] = useState(3);
 
   useEffect(() => {
     fetch("https://disease.sh/v3/covid-19/all")
@@ -50,6 +54,8 @@ function App() {
     .then(data => {
       setCountry(countryCode);
       setCountryInfo(data);
+      setMapCenter([data.countryInfo.lat,data.countryInfo.lng]);
+      setMapZoom(4);
     })
   };
   return (
@@ -79,7 +85,10 @@ function App() {
       <InfoBox title="Recovered" cases={countryInfo.todayRecovered} total={countryInfo.recovered} />
       <InfoBox title="Deaths" cases={countryInfo.todayDeaths} total={countryInfo.deaths} />
       </div>
-      <Map />
+      <Map
+      center={mapCenter}
+      zoom={mapZoom}
+       />
       </div>
       <Card className="app__right">
         <CardContent>
