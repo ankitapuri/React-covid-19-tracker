@@ -1,13 +1,17 @@
 import React, {useState,useEffect} from "react";
 import './App.css';
 import { MenuItem, FormControl, Select, Card,CardContent } from "@material-ui/core";
-import InfoBox from './InfoBox';
+import InfoBox from './InfoBox.js';
 import Map from './Map.js'
+import Table from './Table.js';
+import { sortData } from "./util";
+
 
 function App() {
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState('worldwide');
   const [countryInfo, setCountryInfo] = useState({});
+  const [tableData, setTableData] =useState([]);
 
   useEffect(() => {
     fetch("https://disease.sh/v3/covid-19/all")
@@ -27,6 +31,8 @@ function App() {
              name:country.country,
              value:country.countryInfo.iso2
            }));
+           const sortedData = sortData(data);
+           setTableData(sortedData);
            setCountries(countries);
        });
      };
@@ -79,6 +85,7 @@ function App() {
         <CardContent>
           <h3>Live cases by country</h3>
           {/*Table*/}
+          <Table countries={tableData}/>
           <h3>Worldwide new cases</h3>
          {/*Graph*/}
          </CardContent>
